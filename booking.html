@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NestStay | Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <h2>NestStay</h2>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="listings.html">Listings</a>
+  </div>
+</nav>
+
+<!-- BOOKING BOX -->
+<div class="property">
+
+  <h2 id="booking-property-name">Loading property...</h2>
+
+  <p>Price per night: <strong id="price-night">—</strong></p>
+
+  <label>Check-in</label>
+  <input type="date" id="checkin">
+
+  <label>Check-out</label>
+  <input type="date" id="checkout">
+
+  <hr>
+
+  <p>Nights: <strong id="nights">0</strong></p>
+  <p>Subtotal: <strong id="subtotal">R 0</strong></p>
+  <p>Service fee (10%): <strong id="service-fee">R 0</strong></p>
+
+  <h3>Total: <strong id="total">R 0</strong></h3>
+
+  <button id="payBtn">Pay Now</button>
+
+  <p class="muted small">Free cancellation within 24 hours. Demo booking only.</p>
+
+</div>
+
+<!-- LOAD PROPERTY DATA -->
+<script src="script.js"></script>
+
+<!-- BOOKING LOGIC -->
+<script>
+(() => {
+  // Get property ID from URL
+  const params = new URLSearchParams(window.location.search);
+  const propertyId = Number(params.get("id"));
+
+  // If no ID in URL
+  if (!propertyId) {
+    alert("No property selected");
+    window.location.href = "listings.html";
+    return;
+  }
+
+  // Find property
+  const property = properties.find(p => p.id === propertyId);
+
+  // If property not found
+  if (!property) {
+    alert("Property not found");
+    window.location.href = "listings.html";
+    return;
+  }
+
+  // Show property info
+  document.getElementById("booking-property-name").textContent = property.name;
+  document.getElementById("price-night").textContent = "R " + property.price;
+
+  const checkin = document.getElementById("checkin");
+  const checkout = document.getElementById("checkout");
+
+  // Disable past dates
+  const today = new Date().toISOString().split("T")[0];
+  checkin.min = today;
+  checkout.min = today;
+
+  function calculateTotal() {
+    if (!checkin.value || !checkout.value) return;
+
+    const start = new Date(checkin.value);
+    const end = new Date(checkout.value);
+
+    const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+
+    if (nights <= 0) return;
+
+    const subtotal = nights * property.price;
+    const serviceFee = Math.round(subtotal * 0.10);
+    const total = subtotal + serviceFee;
+
+    document.getElementById("nights").textContent = nights;
+    document.getElementById("subtotal").textContent = "R " + subtotal;
+    document.getElementById("service-fee").textContent = "R " + serviceFee;
+    document.getElementById("total").textContent = "R " + total;
+  }
+
+  checkin.addEventListener("change", calculateTotal);
+  checkout.addEventListener("change", calculateTotal);
+
+  // Fake payment button
+  document.getElementById("payBtn").addEventListener("click", () => {
+    if (!checkin.value || !checkout.value) {
+      alert("Please select dates first");
+      return;
+    }
+
+    alert("🎉 Booking confirmed!\n(This is a demo project)");
+    window.location.href = "index.html";
+  });
+
+})();
+</script>
+
+</body>
+</html>

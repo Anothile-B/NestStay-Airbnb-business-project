@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet/dist/leaflet.css"
+/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NestStay | Property</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <nav class="navbar">
+<h2>NestStay</h2>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="listings.html">Listings</a>
+</div>
+</nav>
+
+<a href="listings.html">← Back to Listings</a>
+
+<div class="property">
+    <div id="map" style="height: 300px; margin-top: 20px;"></div>
+<img id="property-image" />
+<h1 id="property-name"></h1>
+<p id="property-location"></p>
+<p id="property-price"></p>
+
+<p id="property-description"></p>
+
+<button id="book-btn">Request Booking</button>
+</div>
+
+<script src="script.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const propertyId = params.get("id");
+
+  const bookBtn = document.getElementById("book-btn");
+
+  if (bookBtn && propertyId) {
+    bookBtn.addEventListener("click", () => {
+      window.location.href = `booking.html?id=${propertyId}`;
+    });
+  }
+</script>
+
+
+<h2>Guest Reviews</h2>
+<ul id="reviews"></ul>
+
+<input id="reviewInput" placeholder="Leave a review..." />
+<button onclick="addReview()">Post Review</button>
+
+</body>
+</html>
