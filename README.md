@@ -7,11 +7,6 @@ NestStay is a front-end web application inspired by Airbnb, built to provide use
 The app focuses on clean design, usability, and responsive layout for both desktop and mobile users.
 
 ---
-
-# Live Demo Link
-- 
-
----
 # Features
 - Browse available properties
 - View property details such images, pricing, descriptions
